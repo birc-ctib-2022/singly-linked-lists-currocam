@@ -20,6 +20,12 @@ class Link(Generic[T]):
     def __repr__(self) -> str:
         """Representation string."""
         return f'Link({self.head}, {self.tail})'
+    def __iter__(self):
+        link = self
+        while link is not None:
+            yield link.head
+            link = link.tail
+        return StopIteration
 
 
 LList = Optional[Link[T]]  # A list is just a reference to the head or None
@@ -36,7 +42,9 @@ def length(x: LList[T]) -> int:
     >>> length(Link(1, Link(2, None)))
     2
     """
-    ...
+    if x is None:
+        return 0
+    return sum(1 for _ in x)
 
 
 def drop(x: LList[T], k: int) -> LList[T]:
