@@ -1,7 +1,7 @@
 """List tests."""
 
 
-from lists import length, Link
+from lists import drop, length, Link
 
 def test_iter() -> None:
     x = iter(Link(1, Link(2, None)))
@@ -14,3 +14,8 @@ def test_length() -> None:
     assert length(None) == 0
     assert length(Link(1, None)) == 1
     assert length(Link(1, Link(2, None))) == 2
+
+def test_drop() -> None:
+    assert drop(None, 1) is None
+    assert drop(Link(1, None), 1) is None
+    #assert drop(Link(1, Link(2, None)), 1) == Link(2, None)

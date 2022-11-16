@@ -60,7 +60,12 @@ def drop(x: LList[T], k: int) -> LList[T]:
     >>> drop(Link(1, Link(2, None)), 1)
     Link(2, None)
     """
-    ...
+    if x is None or x.tail is None:
+        return None
+    while k > 0 and x.tail is not None:
+        x = x.tail
+        k -= 1
+    return x
 
 
 def take(x: LList[T], k: int) -> LList[T]:
