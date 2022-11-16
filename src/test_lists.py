@@ -1,7 +1,7 @@
 """List tests."""
 
 
-from lists import drop, length, Link, take
+from lists import drop, flip, length, Link, take, reverse
 
 def test_iter() -> None:
     x = iter(Link(1, Link(2, None)))
@@ -26,6 +26,10 @@ def test_drop() -> None:
     assert drop(Link(1, None), 1) is None
     assert drop(Link(1, Link(2, None)), 1) == Link(2, None)
 
+def test_reverse() -> None:
+    assert reverse(None) is None
+    assert reverse(Link(1, None)) == Link(1, None)
+    assert reverse(Link(1, Link(2, Link(3, None)))) == Link(3, Link(2, Link(1, None)))
 
 def test_take() -> None:
     assert take(None, 1) is None

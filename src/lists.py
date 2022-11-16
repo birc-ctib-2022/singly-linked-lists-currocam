@@ -1,10 +1,10 @@
 """Singly-linked lists."""
 
 from __future__ import annotations
+from dataclasses import dataclass
 from typing import Generic, TypeVar, Optional
 
 T = TypeVar('T')  # Generic type variable
-
 
 class Link(Generic[T]):
     """A link in a singly linked list."""
@@ -90,8 +90,14 @@ def take(x: LList[T], k: int) -> LList[T]:
     >>> take(Link(1, Link(2, Link(3, None))), 2)
     Link(1, Link(2, None))
     """
-    return None
-
+    if x is None:
+        return None
+    y = None
+    for index, item in enumerate(x):
+        if index >= k:
+            return y
+        y = reverse(Link(item, y))
+    return y
 
 def reverse(x: LList[T]) -> LList[T]:
     """
@@ -108,4 +114,9 @@ def reverse(x: LList[T]) -> LList[T]:
     >>> reverse(Link(1, Link(2, Link(3, None))))
     Link(3, Link(2, Link(1, None)))
     """
-    ...
+    return flip(None, x)
+
+def flip(x: LList[T], y: LList[T]) -> LList[T]:
+    if y is None:
+        return x
+    return flip(Link(y.head, x), y.tail)
