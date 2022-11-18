@@ -71,11 +71,9 @@ def drop(x: LList[T], k: int) -> LList[T]:
     >>> drop(Link(1, Link(2, None)), 1)
     Link(2, None)
     """
-    if x is None or x.tail is None:
-        return None
-    while k > 0 and x.tail is not None:
+    for _ in range(k):
+        if x is None: return x
         x = x.tail
-        k -= 1
     return x
 
 
@@ -93,14 +91,15 @@ def take(x: LList[T], k: int) -> LList[T]:
     >>> take(Link(1, Link(2, Link(3, None))), 2)
     Link(1, Link(2, None))
     """
-    if x is None:
-        return None
-    y = None
-    for index, item in enumerate(x):
-        if index >= k:
-            return y
-        y = reverse(Link(item, y))
-    return y
+    lst = None
+    if x is None: return x
+    for index, elm in enumerate(x):
+        if index == k: break
+        lst = add_elm(elm, lst)
+    return reverse(lst)
+
+def add_elm(x: T,  lst: LList[T]) -> LList[T]:
+    return Link(x, lst)
 
 def reverse(x: LList[T]) -> LList[T]:
     """
