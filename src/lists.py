@@ -50,9 +50,12 @@ def length(x: LList[T]) -> int:
     >>> length(Link(1, Link(2, None)))
     2
     """
+    acc = 0
     if x is None:
-        return 0
-    return sum(1 for _ in x)
+        return acc
+    for _ in x:
+        acc += 1
+    return acc
 
 
 def drop(x: LList[T], k: int) -> LList[T]:
