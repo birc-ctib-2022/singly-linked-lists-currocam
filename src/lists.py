@@ -1,10 +1,10 @@
 """Singly-linked lists."""
 
 from __future__ import annotations
+from dataclasses import dataclass
 from typing import Generic, TypeVar, Optional
 
 T = TypeVar('T')  # Generic type variable
-
 
 class Link(Generic[T]):
     """A link in a singly linked list."""
@@ -20,6 +20,20 @@ class Link(Generic[T]):
     def __repr__(self) -> str:
         """Representation string."""
         return f'Link({self.head}, {self.tail})'
+    def __iter__(self):
+        link = self
+        while link is not None:
+            yield link.head
+            link = link.tail
+        return StopIteration
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        if self.head != other.head:
+            return False
+        return self.tail.__eq__(other.tail)        
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
 
 LList = Optional[Link[T]]  # A list is just a reference to the head or None
@@ -36,7 +50,12 @@ def length(x: LList[T]) -> int:
     >>> length(Link(1, Link(2, None)))
     2
     """
-    ...
+    acc = 0
+    if x is None:
+        return acc
+    for _ in x:
+        acc += 1
+    return acc
 
 
 def drop(x: LList[T], k: int) -> LList[T]:
@@ -52,7 +71,10 @@ def drop(x: LList[T], k: int) -> LList[T]:
     >>> drop(Link(1, Link(2, None)), 1)
     Link(2, None)
     """
-    ...
+    for _ in range(k):
+        if x is None: return x
+        x = x.tail
+    return x
 
 
 def take(x: LList[T], k: int) -> LList[T]:
@@ -69,8 +91,15 @@ def take(x: LList[T], k: int) -> LList[T]:
     >>> take(Link(1, Link(2, Link(3, None))), 2)
     Link(1, Link(2, None))
     """
-    ...
+    lst = None
+    if x is None: return x
+    for index, elm in enumerate(x):
+        if index == k: break
+        lst = add_elm(elm, lst)
+    return reverse(lst)
 
+def add_elm(x: T,  lst: LList[T]) -> LList[T]:
+    return Link(x, lst)
 
 def reverse(x: LList[T]) -> LList[T]:
     """
@@ -87,4 +116,9 @@ def reverse(x: LList[T]) -> LList[T]:
     >>> reverse(Link(1, Link(2, Link(3, None))))
     Link(3, Link(2, Link(1, None)))
     """
-    ...
+    return flip(None, x)
+
+def flip(x: LList[T], y: LList[T]) -> LList[T]:
+    if y is None:
+        return x
+    return flip(Link(y.head, x), y.tail)
